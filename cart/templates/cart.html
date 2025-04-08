@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Empty space on the left side -->
+    <div class="col-md-2"></div>
+
+    <!-- Check if the cart is not empty -->
+    {% if cart_count != 0 %}
+        <div class="col-md-8 border rounded p-3">
+            <!-- Table to display cart items -->
+            <table class="table table-striped">
+                <thead class="text-muted">
+                <tr>
+                    <th scope="col"></th> <!-- Index -->
+                    <th scope="col">product</th> <!-- Product Name -->
+                    <th scope="col">price</th> <!-- Product Price -->
+                    <th scope="col">quantity</th> <!-- Quantity of Product -->
+                    <th scope="col">total price</th> <!-- Total Price for the Product -->
+                    <th scope="col"></th> <!-- Remove product from cart -->
+                </tr>
+                </thead>
+                <!-- Loop through each cart item and display it -->
+                {% for item in cart %}
+                    <tbody>
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th> <!-- Display item index -->
+                        <td><a class="text-decoration-none" href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></td> <!-- Link to product page -->
+                        <td>${{ item.price }}</td> <!-- Item price -->
+                        <td>{{ item.quantity }}</td> <!-- Item quantity -->
+                        <td>${{ item.total_price }}</td> <!-- Total price (price * quantity) -->
+                        <td><a class="text-danger text-decoration-none" href="{% url 'cart:remove_from_cart' item.product.id %}">remove</a></td> <!-- Link to remove item from cart -->
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <hr>
+            <!-- Checkout button that redirects to the order creation page -->
+            <a href="{% url 'orders:create_order' %}" style="float: right;" class="btn btn-success mt-1">Checkout</a>
+            <!-- Display the total price of the cart -->
+            <h4 class="mt-4"><span class="text-muted">Total:</span> ${{ cart.get_total_price }}</h4>
+        </div>
+    {% else %}
+        <!-- If the cart is empty, display a message -->
+        <div class="col-md-8 mt-5 pt-5 text-center">
+            <br>
+            <h3 class="text-muted text-capitalize">cart is empty..!</h3>
+            <!-- Link to go back to homepage -->
+            <a href="/" class="text-primary text-decoration-none">Back</a>
+        </div>
+    {% endif %}
+
+    <!-- Empty space on the right side -->
+    <div class="col-md-2"></div>
+
+{% endblock %}
