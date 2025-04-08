@@ -76,3 +76,4 @@ def user_orders(request):
     # Context for rendering the user orders page
     context = {'title': 'Orders', 'orders': orders}
     return render(request, 'user_orders.html', context)  # Render the user orders page with the orders data
+
