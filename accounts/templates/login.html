@@ -1,0 +1,45 @@
+{% extends "base1.html" %}  <!-- Extend from the base template to inherit common layout and structure -->
+
+{% load crispy_forms_tags %}  <!-- Load crispy_forms tags for enhanced form styling -->
+
+{% block content %}  <!-- Start content block to override the base template's content section -->
+    <!-- Center the form within the page with a minimum height of 60vh -->
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+        <div class="col-md-6">  <!-- Create a column with a width of 6 in a 12-column grid system -->
+            <form method="POST">  <!-- Define the POST form to submit user data -->
+                {% csrf_token %}  <!-- Add CSRF token for security to protect against cross-site request forgery -->
+
+                <h3>Login</h3>  <!-- Heading for the login form -->
+                <hr>  <!-- Horizontal line to separate sections -->
+
+                <!-- Render the login form using crispy_forms for better styling -->
+                {{ form|crispy }}
+
+                <div class="form-group">  <!-- Container for the submit button -->
+                    <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>  <!-- Submit button to submit the form -->
+                </div>
+
+                <!-- Forgot password link for users who need to reset their password -->
+                <div class="mt-2 mb-2">
+                    <small class="">
+                        <a class="text-decoration-none text-danger" href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+                    </small>
+                </div>
+            </form>
+
+            <!-- Section for users who are new and need to create an account -->
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    New Here? <a class="text-decoration-none" href="{% url 'accounts:user_register' %}">Create account</a>
+                </small>
+            </div>
+
+            <!-- Button for users who want to log in as a manager -->
+            <div class="mt-3 text-center">
+                <a class="btn btn-outline-secondary" href="{% url 'accounts:manager_login' %}">
+                    I want to log in as a manager
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}  <!-- End content block -->
