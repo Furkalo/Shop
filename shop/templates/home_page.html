@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if products %}
+        <!-- SORT BUTTONS -->
+        <div class="d-flex justify-content-end mb-3">
+            <!-- Check if category is present for filtering -->
+            {% if category %}
+                <!-- Sort by ascending price (Price ↑) -->
+                <a href="{% url 'shop:filter_by_category' category.slug %}?sort=asc" class="btn btn-outline-primary btn-sm me-2 {% if sort_order == 'asc' %}active{% endif %}">
+                    Price ↑
+                </a>
+                <!-- Sort by descending price (Price ↓) -->
+                <a href="{% url 'shop:filter_by_category' category.slug %}?sort=desc" class="btn btn-outline-primary btn-sm {% if sort_order == 'desc' %}active{% endif %}">
+                    Price ↓
+                </a>
+            {% else %}
+                <!-- Sort by ascending price if no category filter (Price ↑) -->
+                <a href="{% url 'shop:filter_by_price' %}?sort=asc" class="btn btn-outline-primary btn-sm me-2 {% if sort_order == 'asc' %}active{% endif %}">
+                    Price ↑
+                </a>
+                <!-- Sort by descending price if no category filter (Price ↓) -->
+                <a href="{% url 'shop:filter_by_price' %}?sort=desc" class="btn btn-outline-primary btn-sm {% if sort_order == 'desc' %}active{% endif %}">
+                    Price ↓
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- DISPLAY PRODUCTS -->
+        <div class="row">
+            {% for product in products.object_list %}
+                <div class="col-md-3">
+                    <div class="card me-2 mb-2" style="width: 16rem;">
+                        <!-- Product image -->
+                        <img class="card-img mt-2" style="object-fit: cover;" width="268" height="200" src="{{ product.image.url }}">
+                        <div class="mt-3 text-center">
+                            <!-- Product title -->
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <!-- Product price -->
+                            <p class="text-muted">${{ product.price }}</p>
+
+                            {% if user.is_authenticated %}
+                                <!-- Display 'Buy Now' button if user is authenticated -->
+                                <a href="{{ product.get_absolute_url }}" class="mb-3 btn btn-outline-primary w-100">Buy Now</a>
+                            {% else %}
+                                <!-- If user is not authenticated, display login prompt -->
+                                <p class="text-muted"><small><a href="{% url 'accounts:user_login' %}">Login</a> to buy</small></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- PAGINATION -->
+        <center class="mt-5">
+            <div class="col-md-2">
+                <ul class="pagination">
+                    <!-- Previous page button -->
+                    {% if products.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">{{ products.previous_page_number }}</a></li>
+                    {% endif %}
+                    <!-- Current page number -->
+                    <li class="page-item"><a class="page-link" href="?page={{ products.number }}">{{ products.number }}</a></li>
+                    <!-- Next page button -->
+                    {% if products.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">{{ products.next_page_number }}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </center>
+    {% else %}
+        <!-- IF NO PRODUCTS -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mt-5 pt-5 text-center">
+                <br>
+                <!-- Message displayed if no products are found -->
+                <h3 class="text-muted text-capitalize">No Products..!</h3>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    {% endif %}
+{% endblock %}
