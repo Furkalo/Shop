@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Main container for the error message -->
+    <div class="container mt-5">
+        <!-- Displaying the error message dynamically passed from the view -->
+        <h2 class="text-center text-danger">{{ message }}</h2>
+
+        <!-- Instructional text with a link to return to the homepage -->
+        <p class="text-center">
+            Please try again later or
+            <!-- Link to go back to the homepage -->
+            <a href="/">go back to the homepage</a>.
+        </p>
+    </div>
+{% endblock %}
