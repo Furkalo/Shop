@@ -1,0 +1,14 @@
+# docker-compose.yml
+services:
+  web:
+    build: .
+    container_name: django_app
+    ports:
+      - "8000:8000"
+    image: online_test-web
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3
+      - ./requirements.txt:/app/requirements.txt
+    command: python manage.py runserver 0.0.0.0:8000
+
+
