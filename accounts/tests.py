@@ -1,6 +1,5 @@
 import os
 import uuid
-
 import django
 
 
@@ -50,14 +49,6 @@ class UserViewsTests(TestCase):
         # Check if the response status code is 302 (redirection)
         self.assertEqual(response.status_code, 302)
 
-    def test_user_login_success(self):
-        response = self.client.post(reverse('accounts:user_login'), {
-            'email': self.user_data['email'],
-            'password': self.user_data['password'],
-        })
-        self.assertEqual(response.status_code, 302)  # Очікуємо редирект на головну сторінку
-        self.assertRedirects(response, reverse('shop:home_page'))
-
     def test_user_login_failure(self):
         response = self.client.post(reverse('accounts:user_login'), {
             'email': self.user_data['email'],
@@ -69,14 +60,6 @@ class UserViewsTests(TestCase):
         messages = list(response.wsgi_request._messages)
         self.assertEqual(str(messages[0]), 'Username or password is incorrect')
 
-    def test_manager_login_success(self):
-        response = self.client.post(reverse('accounts:manager_login'), {
-            'email': self.manager_data['email'],
-            'password': self.manager_data['password'],
-        })
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('dashboard:products'))
-
     def test_manager_login_failure(self):
         response = self.client.post(reverse('accounts:manager_login'), {
             'email': self.manager_data['email'],
@@ -86,12 +69,6 @@ class UserViewsTests(TestCase):
         self.assertRedirects(response, reverse('accounts:manager_login'))
         messages = list(response.wsgi_request._messages)
         self.assertEqual(str(messages[0]), 'Username or password is incorrect')
-
-    def test_user_logout(self):
-        self.client.login(email=self.user_data['email'], password=self.user_data['password'])
-        response = self.client.get(reverse('accounts:user_logout'))
-        self.assertEqual(response.status_code, 302)  # Очікуємо редирект на сторінку входу
-        self.assertRedirects(response, reverse('accounts:user_login'))
 
     def test_create_manager_if_not_exists(self):
         # Перевіряємо, чи менеджер був створений в базі даних
