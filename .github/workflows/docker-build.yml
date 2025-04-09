@@ -1,0 +1,56 @@
+name: Docker Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image
+        run: |
+          docker build -t online_shop-web .
+
+      - name: Run Docker container
+        run: |
+          docker run -d --name django_app online_shop-web
+          sleep 10  # Give the app time to initialize
+
+      #  Apply Django migrations
+      - name: Apply Django migrations
+        run: |
+          docker exec django_app python manage.py migrate
+
+      - name: Run tests
+        run: |
+          docker exec django_app pytest accounts/tests.py || (
+            echo "Tests failed. Container logs:"
+            docker logs django_app
+            exit 1
+          )
+
+      - name: Stop and remove Docker container
+        if: always()
+        run: |
+          docker stop django_app
+          docker rm django_app
