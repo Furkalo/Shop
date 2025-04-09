@@ -1,0 +1,21 @@
+{% extends "dashboard.html" %} <!-- Inherit from the main dashboard layout -->
+
+{% block content %} <!-- Start the block where the content will be inserted -->
+
+    <!-- Form for submitting data with the POST method and support for file uploads (enctype="multipart/form-data") -->
+    <form method="POST" enctype="multipart/form-data">
+
+        <!-- CSRF token for security against cross-site request forgery attacks -->
+        {% csrf_token %}
+
+        <!-- Render the form fields dynamically based on the form passed from the view -->
+        {{ form }}
+
+        <!-- Submit button within the form, styled with Bootstrap classes -->
+        <div class="form-group">
+            <!-- Full-width submit button with Bootstrap's primary button styling -->
+            <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>
+        </div>
+    </form>
+
+{% endblock %} <!-- End the content block -->

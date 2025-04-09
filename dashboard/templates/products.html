@@ -1,0 +1,55 @@
+{% extends "dashboard.html" %} <!-- Inherit from the main dashboard layout -->
+
+{% block content %} <!-- Start the content block -->
+
+    <!-- Table to display products -->
+    <table class="table table-striped">
+        <!-- Table header -->
+        <thead class="text-muted">
+        <tr>
+            <th scope="col">n</th> <!-- Product index -->
+            <th scope="col">title</th> <!-- Product title -->
+            <th scope="col">image</th> <!-- Product image -->
+            <th scope="col">price</th> <!-- Product price -->
+            <th scope="col">category</th> <!-- Product category -->
+            <th scope="col">date</th> <!-- Product creation date -->
+            <th scope="col">quantity</th> <!-- Available quantity -->
+            <th scope="col"></th> <!-- Empty column for action links -->
+            <th scope="col"></th> <!-- Empty column for action links -->
+        </tr>
+        </thead>
+
+        <!-- Loop through each product in the products list -->
+        {% for product in products %}
+            <tbody>
+            <tr>
+                <!-- Display the product index -->
+                <th scope="row">{{ forloop.counter }}</th>
+                <!-- Display the product title -->
+                <td><p class="text-decoration-none">{{ product.title }}</p></td>
+
+                <!-- Display the product image -->
+                <td>
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" width="100">
+                </td>
+
+                <!-- Display the product price -->
+                <td>${{ product.price }}</td>
+                <!-- Display the product category -->
+                <td>{{ product.category }}</td>
+                <!-- Display the product creation date -->
+                <td>{{ product.date_created|date:"M d" }}</td>
+                <!-- Display the available quantity -->
+                <td>{{ product.quantity }}</td>
+
+                <!-- Link to delete the product -->
+                <td><a class="text-danger text-decoration-none" href="{% url 'dashboard:delete_product' product.id %}">Delete</a></td>
+
+                <!-- Link to edit the product -->
+                <td><a class="text-info text-decoration-none" href="{% url 'dashboard:edit_product' product.id %}">Edit</a></td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+
+{% endblock %} <!-- End the content block -->

@@ -1,0 +1,39 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+    <!-- Start of table structure to display categories -->
+    <table class="table table-striped ">
+        <thead class="text-muted">
+        <tr>
+            <!-- Table headers defining the columns for n, title, is_sub, slug, sub_category_id, and action links -->
+            <th scope="col">n</th>
+            <th scope="col">title</th>
+            <th scope="col">is_sub</th>
+            <th scope="col">slug</th>
+            <th scope="col">sub_category_id</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <!-- Loop through the categories and render each one as a table row -->
+        {% for category in categories %}
+            <tbody>
+            <tr>
+                <!-- Display the loop counter for 'n', useful for numbering rows -->
+                <th scope="row">{{ forloop.counter }}</th>
+                <!-- Display category title as a link to its detail page -->
+                <td><a class="text-decoration-none" href="{{ category.get_absolute_url }}">{{ category.title }}</a></td>
+                <!-- Display the 'is_sub' flag (could be true/false, or another value depending on your model) -->
+                <td>${{ category.is_sub }}</td>
+                <!-- Display the category slug -->
+                <td>{{ category.slug }}</td>
+                <!-- Display the ID of the parent category (if applicable) -->
+                <td>{{ category.sub_category_id }}</td>
+                <!-- Provide links for delete and edit actions -->
+                <td><a class="text-danger text-decoration-none" href="{% url 'dashboard:delete_category' category.id %}">Delete</a></td>
+                <td><a class="text-info text-decoration-none" href="{% url 'dashboard:edit_category' category.id %}">Edit</a></td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "dashboard.html" %} <!-- Inherit from the main dashboard layout -->
+
+{% block content %} <!-- Start the content block -->
+
+    <!-- Check if the order status is True (successful) or False (cancelled) -->
+    {% if order.status %}
+        <!-- If the order was successful, display a success message -->
+        <h4><b class="text-success">Successful</b></h4>
+    {% else %}
+        <!-- If the order was cancelled, display a cancelled message -->
+        <h3><b class="text-danger">Cancelled</b></h3>
+    {% endif %}
+
+    <!-- Loop through each item in the 'items' list -->
+    {% for item in items %}
+        <div class="bg-light rounded border-bottom p-3">
+            <!-- Display product title as a link to its detail page -->
+            <p>product:<a class="text-decoration-none" href="{{ item.product.get_absolute_url }}"> {{item.product.title}}</a></p>
+            <!-- Display the price of the product -->
+            <p>Price: ${{item.price}}</p>
+            <!-- Display the quantity of the product -->
+            <p>quantity: {{item.quantity}}</p>
+        </div>
+    {% endfor %}
+
+    <!-- Display the total price of the order -->
+    <h4 class="border-top pt-2 text-muted">Total: ${{ order.get_total_price }}</h4>
+
+{% endblock %} <!-- End the content block -->

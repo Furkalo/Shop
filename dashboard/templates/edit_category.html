@@ -1,0 +1,21 @@
+{% extends "dashboard.html" %} <!-- Inherit from the main dashboard layout -->
+
+{% block content %} <!-- Start the block where the content will be inserted -->
+
+    <!-- Form for submitting data, POST method to send the form data -->
+    <form method="POST">
+
+        <!-- CSRF token for security against cross-site request forgery attacks -->
+        {% csrf_token %}
+
+        <!-- Render the form fields dynamically based on the form passed from the view -->
+        {{ form }}
+
+        <!-- Form submit button -->
+        <div class="form-group">
+            <!-- Button with Bootstrap styling and full width -->
+            <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>
+        </div>
+    </form>
+
+{% endblock %} <!-- End the content block -->

@@ -1,0 +1,48 @@
+{% extends "dashboard.html" %} <!-- Inherit from the main dashboard layout -->
+
+{% block content %} <!-- Start the content block -->
+
+    <!-- Table to display orders -->
+    <table class="table">
+        <!-- Table header -->
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th> <!-- Order number -->
+            <th scope="col">User</th> <!-- User's full name -->
+            <th scope="col">Id</th> <!-- Order ID -->
+            <th scope="col">total price</th> <!-- Total price of the order -->
+            <th scope="col">status</th> <!-- Order status -->
+            <th scope="col"></th> <!-- Empty column for action links -->
+        </tr>
+        </thead>
+
+        <!-- Loop through each order in the orders list -->
+        {% for order in orders %}
+            <tbody>
+            <tr>
+                <!-- Display the order number -->
+                <th scope="row">{{ forloop.counter }}</th>
+                <!-- Display the user's full name -->
+                <td>{{ order.user.full_name }}</td>
+                <!-- Display the order ID -->
+                <td>{{ order.id }}</td>
+                <!-- Display the total price of the order -->
+                <td>${{ order.get_total_price }}</td>
+
+                <!-- Check if the order is successful or canceled -->
+                {% if order.status %}
+                    <!-- If successful, display "Successful" in green -->
+                    <td class="text-success">Successful</td>
+                {% else %}
+                    <!-- If canceled, display "Canceled" in red -->
+                    <td class="text-danger">Canceled</td>
+                {% endif %}
+
+                <!-- Link to the order's detail page -->
+                <td><a href="{% url 'dashboard:order_detail' order.id %}" class="text-primary text-decoration-none">Detail</a></td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+
+{% endblock %} <!-- End the content block -->
