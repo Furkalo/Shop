@@ -49,8 +49,6 @@ class UserViewsTests(TestCase):
         # Check if the response status code is 302 (redirection)
         self.assertEqual(response.status_code, 302)
 
-
-
     def test_user_login_failure(self):
         response = self.client.post(reverse('accounts:user_login'), {
             'email': self.user_data['email'],
@@ -62,8 +60,6 @@ class UserViewsTests(TestCase):
         messages = list(response.wsgi_request._messages)
         self.assertEqual(str(messages[0]), 'Username or password is incorrect')
 
-
-
     def test_manager_login_failure(self):
         response = self.client.post(reverse('accounts:manager_login'), {
             'email': self.manager_data['email'],
@@ -73,8 +69,6 @@ class UserViewsTests(TestCase):
         self.assertRedirects(response, reverse('accounts:manager_login'))
         messages = list(response.wsgi_request._messages)
         self.assertEqual(str(messages[0]), 'Username or password is incorrect')
-
-
 
     def test_create_manager_if_not_exists(self):
         # Перевіряємо, чи менеджер був створений в базі даних
