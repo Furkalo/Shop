@@ -29,28 +29,28 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t online_shop-web .
+          docker build -t online_test-web .
 
       - name: Run Docker container
         run: |
-          docker run -d --name django_app online_shop-web
+          docker run -d --name django_app1 online_test-web
           sleep 10  # Give the app time to initialize
 
       #  Apply Django migrations
       - name: Apply Django migrations
         run: |
-          docker exec django_app python manage.py migrate
+          docker exec django_app1 python manage.py migrate
 
       - name: Run tests
         run: |
-          docker exec django_app pytest accounts/tests.py || (
+          docker exec django_app1 pytest accounts/tests.py || (
             echo "Tests failed. Container logs:"
-            docker logs django_app
+            docker logs django_app1
             exit 1
           )
 
       - name: Stop and remove Docker container
         if: always()
         run: |
-          docker stop django_app
-          docker rm django_app
+          docker stop django_app1
+          docker rm django_app1

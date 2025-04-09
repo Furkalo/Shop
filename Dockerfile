@@ -32,15 +32,14 @@ RUN apt-get update && apt-get install -y \
 # Копіюємо requirements.txt і встановлюємо Python-залежності
 COPY requirements.txt .
 # Remove backports.zoneinfo from requirements if Python >= 3.9
-RUN pip install --upgrade pip && \
-    grep -v "backports.zoneinfo" requirements.txt > requirements_filtered.txt && \
-    pip install -r requirements_filtered.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Копіюємо весь проєкт
 COPY . .
 
 # Відкриття порту
-EXPOSE 8000
+EXPOSE 8001
 
 # Запуск Django-серверу
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
