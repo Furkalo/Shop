@@ -63,14 +63,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Koyeb CLI
-        uses: koyeb/action-cli@v1
+      - name: Install and configure the Koyeb CLI
+        uses: koyeb-community/koyeb-actions@v2
+        with:
+          api_token: "${{ secrets.TestTryKey }}"
 
-      - name: Deploy to Koyeb
-        env:
-          KOYEB_API_KEY: ${{ secrets.TestTryKey }}
-        run: |
-          koyeb auth login --api-key $KOYEB_API_KEY
-          koyeb app update ${shop} --git github.com/${{ github.repository }}
-       
-          
+      - name: Build and deploy the application to Koyeb
+        uses: koyeb/action-git-deploy@v1
+        with:
+          service-env: "PORT=8001"
+          service-ports: "8001:http"
+          service-routes: "/:8001"
