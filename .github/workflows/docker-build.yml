@@ -64,10 +64,11 @@ jobs:
 
       - name: Set up Koyeb CLI
         run: |
-          curl -sSL https://github.com/koyeb/cli/releases/download/v1.0.0/koyeb-cli_1.0.0_linux_amd64.tar.gz -o koyeb-cli.tar.gz
-          tar -xzvf koyeb-cli.tar.gz -C /usr/local/bin
-          koyeb version
-      
+          git clone https://github.com/koyeb/koyeb-cli.git /tmp/koyeb-cli
+          cd /tmp/koyeb-cli
+          make install  # Якщо в репозиторії є Makefile, щоб встановити Koyeb CLI
+          koyeb version  # Перевірка, чи працює Koyeb CLI
+
       - name: Deploy to Koyeb
         env:
           KOYEB_API_KEY: ${{ secrets.TestTryKey }}
