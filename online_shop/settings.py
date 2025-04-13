@@ -123,7 +123,8 @@ USE_TZ = True  # Enable timezone-aware datetime objects
 
 # Static files (CSS, JavaScript, Images)
 # Settings for serving static files like CSS and JavaScript
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # може поламатись
 
 # Directory for storing uploaded media files (e.g., user-uploaded images, documents)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
