@@ -112,6 +112,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'media'),  # ваш каталог з додатковими статичними файлами
+]
+
 # Localization settings for internationalization
 LANGUAGE_CODE = 'en-us'
 
