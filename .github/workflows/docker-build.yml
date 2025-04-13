@@ -64,7 +64,7 @@ jobs:
 
       - name: Set up Koyeb CLI
         run: |
-          curl -sSL git@github.com:koyeb/koyeb-cli.git | tar -xz -C /usr/local/bin
+          curl -sSL https://github.com/koyeb/koyeb-cli.git | tar -xz -C /usr/local/bin
           koyeb version
 
       - name: Deploy to Koyeb
