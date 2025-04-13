@@ -54,3 +54,22 @@ jobs:
         run: |
           docker stop django_app1
           docker rm django_app1
+
+  deploy_koyeb:
+    runs-on: ubuntu-latest
+    needs: build  # This job will only run if the 'build' job succeeds
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Koyeb CLI
+        run: |
+          curl -sSL https://github.com/koyeb/cli/releases/download/v1.0.0/koyeb-cli_1.0.0_linux_amd64.tar.gz | tar -xz -C /usr/local/bin
+          koyeb version
+
+      - name: Deploy to Koyeb
+        env:
+          KOYEB_API_KEY: ${{ secrets.TestTryKey }}
+        run: |
+          koyeb login --api-key $TestTryKey
+          koyeb app deploy --app ${shop} --source .
