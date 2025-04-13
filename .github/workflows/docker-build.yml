@@ -64,13 +64,12 @@ jobs:
 
       - name: Set up Koyeb CLI
         run: |
-          curl -sSL https://github.com/koyeb/cli/releases/download/v1.0.0/koyeb-cli_1.0.0_linux_amd64.tar.gz -o koyeb-cli.tar.gz
-          tar -xvzf koyeb-cli.tar.gz -C /usr/local/bin
+          curl -sSL git@github.com:koyeb/koyeb-cli.git | tar -xz -C /usr/local/bin
           koyeb version
 
       - name: Deploy to Koyeb
         env:
           KOYEB_API_KEY: ${{ secrets.TestTryKey }}
         run: |
-          koyeb login --api-key ${{ secrets.TestTryKey }}
+          koyeb login --api-key $TestTryKey
           koyeb app deploy --app ${shop} --source .
