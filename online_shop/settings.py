@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-kr1p-zj6!vss$(xd2f7vk8nw*3g@-ao92zzg8^@u!mj(l#s)+i
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG should be set to False in production for security reasons.
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS defines a list of valid host/domain names for your Django site.
 # It is used to prevent HTTP Host header attacks.
@@ -112,10 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'media'),   # your directory with additional static files
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'media'),   # your directory with additional static files
+# ]
 
 # Localization settings for internationalization
 LANGUAGE_CODE = 'en-us'
