@@ -74,3 +74,16 @@ jobs:
           service-env: "PORT=8001"
           service-ports: "8001:http"
           service-routes: "/:8001"
+
+  auto_merge_to_main:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Auto-merge PR to main
+        run: |
+          gh pr merge "$PR_URL" --merge --delete-branch --admin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
